@@ -1,0 +1,2 @@
+ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/sh -c '/bin/chmod 666 /sys/class/backlight/%k/brightness'"
+ACTION=="add", SUBSYSTEM=="leds", KERNEL=="intel_backlight", RUN+="/bin/sh -c '/bin/chmod 666 /sys/class/backlight/%k/brightness'"
