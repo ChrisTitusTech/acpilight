@@ -33,7 +33,9 @@ def clamp(v, vmin, vmax):
 class RawController(object):
     def __init__(self, path):
         self._brightness_path = os.path.join(path, "brightness")
-        self._max_brightness = int(open(os.path.join(path, "max_brightness")).read())
+        with open(os.path.join(path, "max_brightness")) as f:
+            self._max_brightness = int(f.read())
+
 
     @property
     def max_brightness(self):
@@ -180,13 +182,15 @@ def main():
         print(int(ctrl.brightness_steps))
     else:
         current = ctrl.brightness
+        target = current
         if args.set is not None:
             target = args.set
         elif args.inc is not None:
-            target = current + args.inc
+            target += args.inc
         elif args.dec is not None:
-            target = current - args.dec
+            target -= args.dec
         target = clamp(target, 0, ctrl.max_brightness)
+        ctrl.brightness = target
         if current == target:
             pass
         elif args.steps <= 1 or args.time < 1:
